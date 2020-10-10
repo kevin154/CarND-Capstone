@@ -23,10 +23,10 @@ as well as to verify your TL classifier.
 '''
 
 # Number of waypoints to publish
-LOOKAHEAD_WPS = 150
-PUBLISHING_RATE = 40
+LOOKAHEAD_WPS = 50
+PUBLISHING_RATE = 25
 # Number of waypoints before stopline where car should come to rest
-STOPLINE_BUFFER = 3
+STOPLINE_BUFFER = 4
 MAX_DECEL = 1.0
 
 

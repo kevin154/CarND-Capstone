@@ -4,18 +4,15 @@ from yaw_controller import YawController
 import rospy
 
 
-GAS_DENSITY = 2.858
-ONE_MPH = 0.44704
-
 MIN_THROTTLE = 0.0
-MAX_THROTTLE = 0.5
+MAX_THROTTLE = 0.4
 MIN_SPEED = 0.1
 
 
-# PID Controller params
-kp = 0.15
-ki = 0.0001
-kd = 3.5
+# Throttle PID Controller params
+kp = 0.3
+ki = 0.1
+kd = 0.0
 
 
 # LowPass filter params
@@ -45,8 +42,6 @@ class Controller(object):
         self.decel_limit = decel_limit
         self.accel_limit = accel_limit
         self.wheel_radius = wheel_radius   
-        
-        self.last_velocity = 0.0
         self.last_time = rospy.get_time()
         
         
@@ -65,7 +60,6 @@ class Controller(object):
         
         # Calculate velocity error and sample time, pass through to PID controller
         velocity_error = linear_velocity - current_velocity
-        self.last_velocity = current_velocity
         
         current_time = rospy.get_time()
         sample_time = current_time - self.last_time
@@ -77,7 +71,7 @@ class Controller(object):
         brake = 0.0
         
         # If car isn't moving enough brake to keep car at a standstill
-        if linear_velocity == 0 and current_velocity < MIN_SPEED:
+        if linear_velocity == 0.0 and current_velocity < MIN_SPEED:
             throttle = 0.0
             brake = self.vehicle_mass * self.wheel_radius
         
